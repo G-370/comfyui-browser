@@ -38,14 +38,6 @@ function processFile(
   files: Array<any>,
 ) {
   const extname = file.name.split('.').pop().toLowerCase();
-  if (WHITE_EXTS.includes(extname)) {
-    file['fileType'] = extname;
-    if (extname === 'json') {
-      if (findFile(file.name, IMAGE_EXTS.concat(VIDEO_EXTS), files)) {
-        return;
-      }
-    }
-  }
   if (IMAGE_EXTS.includes(extname)) {
     file['fileType'] = 'image';
   }
@@ -59,11 +51,6 @@ function processFile(
   file['url'] = getFileUrl(comfyUrl, folderType, file);
   if (['image', 'video'].includes(file['fileType'])) {
     file['previewUrl'] = getFileUrl(comfyUrl, folderType, file);
-
-    let jsonFile = findFile(file.name, JSON_EXTS, files);
-    if (jsonFile) {
-      file['url'] = getFileUrl(comfyUrl, folderType, jsonFile);
-    }
   }
 
   const d = dayjs.unix(file.created_at);
